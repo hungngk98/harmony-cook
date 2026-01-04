@@ -3,37 +3,42 @@ package main
 import (
 	"embed"
 	"encoding/json"
+	"flag"
 	"harmonycook/music"
 	"io/fs"
 	"log"
 	"net/http"
 )
 
+var envFlag = flag.String("env", "prod", "Running environment")
+
 type APIResponse struct {
 	ErCode int `json:"erCode"`
 	Data   any `json:"data"`
 }
 
-var GUI_BUILD_DIR string = "gui-dist"
-
 //go:embed uiweb
-var uiweb embed.FS
+var uiwebEmbedFS embed.FS
 
 func main() {
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	requestedFilepath := GUI_BUILD_DIR + r.URL.Path
+	flag.Parse()
 
-	// 	if _, err := os.Stat(requestedFilepath); err == nil {
-	// 		http.ServeFile(w, r, requestedFilepath)
-	// 		return
-	// 	}
-	// 	http.ServeFile(w, r, GUI_BUILD_DIR+"/index.html")
-	// })
+	if *envFlag == "prod" {
+		uiwebDist, _ := fs.Sub(uiwebEmbedFS, "uiweb/dist")
 
-	fsys, _ := fs.Sub(uiweb, "uiweb/dist")
-	http.Handle("/", http.FileServer(http.FS(fsys)))
+		muxUIWeb := http.NewServeMux()
 
-	http.HandleFunc("/api/suggestchords", func(w http.ResponseWriter, req *http.Request) {
+		muxUIWeb.Handle("/", http.FileServer(http.FS(uiwebDist)))
+
+		go func() {
+			log.Println("Open browser and go to http://localhost:3000")
+			log.Fatal(http.ListenAndServe(":3000", muxUIWeb))
+		}()
+	}
+
+	muxServer := http.NewServeMux()
+
+	muxServer.HandleFunc("/api/suggestchords", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
 		w.Header().Set("Content-Type", "application/json")
@@ -60,6 +65,6 @@ func main() {
 
 	})
 
-	log.Println("App is running at http://localhost:5000")
-	http.ListenAndServe(":5000", nil)
+	log.Println("Server is running")
+	log.Fatal(http.ListenAndServe(":5000", muxServer))
 }
