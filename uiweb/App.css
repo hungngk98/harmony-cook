@@ -1,0 +1,18 @@
+#chord-suggestions {
+    /* width: 600px; */
+    border-collapse: collapse;
+}
+
+#chord-suggestions,
+#chord-suggestions th,
+#chord-suggestions td {
+    border: 1px solid;
+}
+
+#chord-suggestions__col--note-count {
+    width: 100px;
+}
+
+#chord-suggestions__col--chords {
+    width: 600px;
+}
