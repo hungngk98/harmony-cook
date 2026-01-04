@@ -2,7 +2,7 @@
   "name": "harmony-cook-gui",
   "version": "0.0.1",
   "scripts": {
-    "dev": "rsbuild dev",
+    "dev:uiweb": "rsbuild dev",
     "build:linux": "rsbuild build && go build -o dist/harmonycook ./main.go",
     "build:server:linux": "go build -o dist/harmonycook ./main.go",
     "build:uiweb": "rsbuild build"

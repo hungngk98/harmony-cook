@@ -17,7 +17,7 @@ export default function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const apiRes = await fetchChordsRanked(notes.split(',').map(n => n.trim()))
+        const apiRes = await fetchChordsRanked(notes.trim().split(',').map(n => n.trim()).filter(n => n.length > 0))
 
         if (apiRes.erCode == 0) {
             setChordGroups(apiRes.data);
@@ -31,7 +31,7 @@ export default function App() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="input--notes">Notes: </label>
-                    <input id='input--notes' type="text" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                    <input id='input--notes' type="text" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder='d,gb,c#...' />
                 </div>
                 <button type='submit'>Search</button>
             </form>
