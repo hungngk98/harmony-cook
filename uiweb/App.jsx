@@ -1,56 +1,25 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router";
 import './App.css';
-
-const fetchChordsRanked = (notes) => fetch(
-    "http://localhost:5000/api/suggestchords",
-    {
-        headers: { "Content-Type": "application/json" },
-        method: 'POST',
-        body: JSON.stringify({ notes })
-    }
-).then(res => res.json())
+import SuggestChords from "./modules/SuggestChords/SuggestChords";
+import SuggestScales from "./modules/SuggestScales/SuggestScales";
+import Menu from "./modules/shared/Menu";
 
 export default function App() {
-    const [notes, setNotes] = useState("");
-    const [chordGroups, setChordGroups] = useState([]);
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" Component={Home} />
+                <Route path="/suggestchords" Component={SuggestChords} />
+                <Route path="/suggestscales" Component={SuggestScales} />
+            </Routes>
+        </BrowserRouter>
+    )
+}
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const apiRes = await fetchChordsRanked(notes.trim().split(',').map(n => n.trim()).filter(n => n.length > 0))
-
-        if (apiRes.erCode == 0) {
-            setChordGroups(apiRes.data);
-        } else {
-            alert("error");
-        }
-    }
-
+function Home() {
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="input--notes">Notes: </label>
-                    <input id='input--notes' type="text" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder='d,gb,c#...' />
-                </div>
-                <button type='submit'>Search</button>
-            </form>
-            <table id='chord-suggestions'>
-                <thead>
-                    <tr>
-                        <td id='chord-suggestions__col--note-count'>Note count</td>
-                        <td id='chord-suggestions__col--chords'>Chords</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(chordGroups).sort((a, b) => b - a).map((noteCount, i) => (
-                        <tr key={i}>
-                            <td>{noteCount}</td>
-                            <td>{chordGroups[noteCount].join(', ')}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <Menu />
         </div>
     )
 }

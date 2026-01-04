@@ -3,16 +3,8 @@
     border-collapse: collapse;
 }
 
-#chord-suggestions,
-#chord-suggestions th,
-#chord-suggestions td {
+table,
+th,
+td {
     border: 1px solid;
-}
-
-#chord-suggestions__col--note-count {
-    width: 100px;
-}
-
-#chord-suggestions__col--chords {
-    width: 600px;
 }

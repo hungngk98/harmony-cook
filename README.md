@@ -10,11 +10,11 @@
 - Go 1.25.5+
 ### Steps
 1. Install packages
-    - <code>npm install</code>
+    - <code>npm install --omit=dev</code>
 2. Build web UI static files
     - <code>npx rsbuild build</code>
 3. Build executable
-    - <code>go build -o [output-filepath]</code>
+    - <code>go build -o [output_filepath] main.go</code>
 
 ## Run
 - Methods

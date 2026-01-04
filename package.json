@@ -3,16 +3,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev:uiweb": "rsbuild dev",
-    "build:linux": "rsbuild build && go build -o dist/harmonycook ./main.go",
-    "build:server:linux": "go build -o dist/harmonycook ./main.go",
-    "build:uiweb": "rsbuild build"
+    "dev:server": "go run main.go --env=dev",
+    "build:linux": "rsbuild build && go build -o dist/harmonycook main.go"
   },
   "type": "module",
-  "devDependencies": {
-    "@rsbuild/core": "^1.7.1",
-    "@rsbuild/plugin-react": "^1.4.2"
-  },
   "dependencies": {
+    "@rsbuild/core": "^1.7.1",
+    "@rsbuild/plugin-react": "^1.4.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router": "^7.11.0"
