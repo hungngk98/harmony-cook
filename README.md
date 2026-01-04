@@ -9,19 +9,20 @@
 - Nodejs 24.12.0+
 - Go 1.25.5+
 ### Steps
-1. Install packages
+- Install packages 
     - <code>npm install --omit=dev</code>
-2. Build web UI static files
+- Build web UI static files
     - <code>npx rsbuild build</code>
-3. Build executable
+- Build executable
     - <code>go build -o [output_filepath] main.go</code>
 
 ## Run
-- Methods
-    - With executable
-        1. Add execute permission to the executable
-        2. Open terminal and run the executable from there
-    - Without building executable
-        - Unix-like systems: <code>npx rsbuild build && go run main.go</code>
-        - Windows: Basically run <code>npx rsbuild build</code> and then <code>go run main.go</code>, I just don't know how to chain commands in Windows. Please help yourself :")
-- Open browser and go to <a href="http://localhost:3000">http://localhost:3000</a>
+### Methods
+- With executable
+    - Add execute permission to the executable
+    - Open terminal and run the executable from there
+- Without building executable
+    - Unix-like systems: <code>npx rsbuild build && go run main.go</code>
+    - Windows: Basically run <code>npx rsbuild build</code> and then <code>go run main.go</code>. I just don't know how to chain commands in Windows. Please help yourself :")
+### Open app
+- Go to <a href="http://localhost:3000">http://localhost:3000</a>
