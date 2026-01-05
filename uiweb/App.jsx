@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import './App.css';
 import SuggestChords from "./modules/SuggestChords/SuggestChords";
-import SuggestScales from "./modules/SuggestScales/SuggestScales";
+import SuggestTones from "./modules/SuggestTones/SuggestTones";
 import Menu from "./modules/shared/Menu";
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
             <Routes>
                 <Route path="/" Component={Home} />
                 <Route path="/suggestchords" Component={SuggestChords} />
-                <Route path="/suggestscales" Component={SuggestScales} />
+                <Route path="/suggesttones" Component={SuggestTones} />
             </Routes>
         </BrowserRouter>
     )

@@ -1,10 +1,9 @@
 {
   "name": "harmony-cook-gui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev:uiweb": "rsbuild dev",
-    "dev:server": "go run main.go --env=dev",
-    "build:linux": "rsbuild build && go build -o dist/harmonycook main.go"
+    "dev:server": "go run server.go --env=dev"
   },
   "type": "module",
   "dependencies": {

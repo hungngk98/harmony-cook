@@ -56,3 +56,42 @@ func (chord Chord) CountMatchingNotes(notes []Note) int {
 	}
 	return count
 }
+
+func FormatChords(chords []Chord) []string {
+	result := []string{}
+	for _, chord := range chords {
+		result = append(result, chord.Format())
+	}
+	return result
+}
+
+func RmDupChords(chords []Chord) []Chord {
+	uniques := []Chord{}
+	for i := range chords {
+		isUnique := true
+		for _, unique := range uniques {
+			if chords[i].Root == unique.Root && chords[i].Symbol == unique.Symbol {
+				isUnique = false
+				break
+			}
+		}
+		if isUnique == true {
+			uniques = append(uniques, chords[i])
+		}
+	}
+	return uniques
+}
+
+func SuggestChords(notes []Note) map[int][]Chord {
+	chords := []Chord{}
+	for _, n := range notes {
+		chords = append(chords, n.FindChords()...)
+	}
+	chords = RmDupChords(chords)
+	result := map[int][]Chord{}
+	for i := range chords {
+		matchingNoteCount := chords[i].CountMatchingNotes(notes)
+		result[matchingNoteCount] = append(result[matchingNoteCount], chords[i])
+	}
+	return result
+}
