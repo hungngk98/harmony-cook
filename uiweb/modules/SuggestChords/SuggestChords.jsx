@@ -1,6 +1,6 @@
 import Menu from "../shared/Menu";
 import "./SuggestChords.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const fetchSuggestedChords = (notes) => fetch(
     "http://localhost:5000/api/suggestchords",
@@ -13,7 +13,7 @@ const fetchSuggestedChords = (notes) => fetch(
 
 export default function SuggestChords() {
     const [notes, setNotes] = useState("");
-    const [chordGroups, setChordGroups] = useState([]);
+    const [chordGroups, setChordGroups] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,6 +23,9 @@ export default function SuggestChords() {
 
             if (apiRes.erCode == 0) {
                 setChordGroups(apiRes.data);
+                if (sessionStorage) {
+                    sessionStorage.setItem("lastSuggestedChords", JSON.stringify({ notes: notes, chordGroups: apiRes.data }))
+                }
             } else if (apiRes.erCode == 1) {
                 if (apiRes.message) alert(apiRes.message);
                 else alert("server error")
@@ -31,6 +34,19 @@ export default function SuggestChords() {
             alert("unknown error");
         }
     }
+
+    useEffect(() => {
+        if (sessionStorage) {
+            const lastSuggestedChordsJSON = sessionStorage.getItem("lastSuggestedChords");
+            if (lastSuggestedChordsJSON) {
+                const lastSuggestedChords = JSON.parse(lastSuggestedChordsJSON);
+                if (lastSuggestedChords.notes && lastSuggestedChords.chordGroups) {
+                    setNotes(lastSuggestedChords.notes);
+                    setChordGroups(lastSuggestedChords.chordGroups);
+                }
+            }
+        }
+    }, []);
 
     return (
         <div>

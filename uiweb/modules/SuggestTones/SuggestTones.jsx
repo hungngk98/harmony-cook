@@ -1,6 +1,6 @@
 import Menu from "../shared/Menu";
 import "./SuggestTones.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const fetchSuggestedTones = (notes) => fetch(
     "http://localhost:5000/api/suggesttones",
@@ -23,6 +23,9 @@ export default function SuggestTones() {
 
             if (apiRes.erCode == 0) {
                 setToneGroups(apiRes.data);
+                if (sessionStorage) {
+                    sessionStorage.setItem("lastSuggestedTones", JSON.stringify({ notes: notes, toneGroups: apiRes.data }))
+                }
             } else if (apiRes.erCode == 1) {
                 if (apiRes.message) alert(apiRes.message);
                 else alert("server error")
@@ -31,6 +34,19 @@ export default function SuggestTones() {
             alert("unknown error");
         }
     }
+
+    useEffect(() => {
+        if (sessionStorage) {
+            const lastSuggestedTonesJSON = sessionStorage.getItem("lastSuggestedTones");
+            if (lastSuggestedTonesJSON) {
+                const lastSuggestedTones = JSON.parse(lastSuggestedTonesJSON);
+                if (lastSuggestedTones.notes && lastSuggestedTones.toneGroups) {
+                    setNotes(lastSuggestedTones.notes);
+                    setToneGroups(lastSuggestedTones.toneGroups);
+                }
+            }
+        }
+    }, []);
 
     return (
         <div>

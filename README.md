@@ -33,4 +33,4 @@
 - Without building executable
     - Run command <code>go run server.go</code>
 ### Open app
-- Go to <a href="http://localhost:3000">http://localhost:3000</a>
+- Go to <a href="http://localhost:3000">http://localhost:3000</a> on a browser

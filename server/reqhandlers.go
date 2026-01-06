@@ -1,45 +1,10 @@
-package main
+package server
 
 import (
-	"embed"
 	"encoding/json"
-	"flag"
-	"fmt"
 	"harmonycook/music"
-	"io/fs"
-	"log"
 	"net/http"
 )
-
-var envFlag = flag.String("env", "prod", "Running environment")
-
-//go:embed uiweb
-var uiwebFS embed.FS
-
-func main() {
-	flag.Parse()
-
-	if *envFlag == "prod" {
-		uiwebDistFS, _ := fs.Sub(uiwebFS, "uiweb/dist")
-
-		muxUIWeb := http.NewServeMux()
-
-		muxUIWeb.Handle("/", http.FileServer(http.FS(uiwebDistFS)))
-
-		go func() {
-			log.Fatal(http.ListenAndServe(":3000", muxUIWeb))
-		}()
-
-		fmt.Println("Use app at http://localhost:3000")
-	}
-
-	muxServer := http.NewServeMux()
-
-	muxServer.HandleFunc("/api/suggestchords", SuggestChordsHandler)
-	muxServer.HandleFunc("/api/suggesttones", SuggestTonesHandler)
-
-	log.Fatal(http.ListenAndServe(":5000", muxServer))
-}
 
 type APIResponse struct {
 	ErCode  int    `json:"erCode"`

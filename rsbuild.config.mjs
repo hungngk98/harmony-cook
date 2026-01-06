@@ -11,7 +11,7 @@ export default defineConfig({
     output: {
         target: 'web',
         distPath: {
-            root: 'uiweb/dist'
+            root: 'embedstatic/uiwebdist'
         }
     },
     html: {
